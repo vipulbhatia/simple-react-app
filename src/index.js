@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import { AppContainer } from 'react-hot-loader';
@@ -20,7 +20,7 @@ class App extends React.Component {
 
     componentWillMount() {
         this.eventEmitter = new EventEmitter();
-        this.eventEmitter.addListener('navigateScreenIndex', ({newScreenIndex}) => {
+        this.eventEmitter.addListener('navigateScreen', ({newScreenIndex}) => {
             this.updateScreen({newScreenIndex});
         });
     }
@@ -34,12 +34,14 @@ class App extends React.Component {
                 <div className="display-table">
                     <div className="display-table-row">
                         <div className="display-table-cell" id="side-menu-container">
-                            <SideMenu eventEmitter={this.eventEmitter}/>
+                            <SideMenu screenIndex={this.state.screenIndex}/>
                         </div>
                         <div className="display-table-cell" id="content">
-                            <Route exact path="/" component={Home} />
-                            <Route exact path="/home" component={Home} />
-                            <Route exact path="/about" component={About} />
+                            <Switch>
+                                <Redirect exact from="/" to="/home" />
+                                <Route exact path="/home" render={() => <Home eventEmitter={this.eventEmitter} {...this.props} />} />
+                                <Route exact path="/about" render={() => <About eventEmitter={this.eventEmitter} {...this.props} />} />
+                            </Switch>
                         </div>
                     </div>
                 </div>
@@ -69,7 +71,7 @@ render(routerRenderer)
 
 // Webpack Hot Module Replacement API
 if (module.hot) {
-  module.hot.accept(routerRenderer, () => { render(routerRenderer) })
+    module.hot.accept(routerRenderer, () => { render(routerRenderer) })
 }
 
 registerServiceWorker();

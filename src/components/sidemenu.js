@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import { Glyphicon } from 'react-bootstrap';
 
 export default class SideMenu extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render () {
         return(
             <div id="side-menu">
@@ -14,7 +18,7 @@ export default class SideMenu extends React.Component {
                             <span>Home</span>
                         </Link>
                     </li>
-                    <li className={this.props.listIndex === 2 ? 'active' : ''}>
+                    <li className={this.props.screenIndex === 2 ? 'active' : ''}>
                         <Link to="/about">
                             <span><Glyphicon glyph={'home'}/></span>
                             <span>About</span>
