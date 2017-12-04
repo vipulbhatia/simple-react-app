@@ -16,6 +16,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loggedIn: true,
             screenIndex: 1
         }
     }
@@ -28,10 +29,16 @@ class App extends React.Component {
     }
 
     updateScreen = ({newScreenIndex}) => {
+        console.log('setting screen index');
         this.setState({screenIndex: newScreenIndex});
     }
 
     render() {
+        const PrivateRoute = ({ component: Component, exact, path, ...rest }) => (
+            <Route exact path={path} render={props => (
+                this.state.loggedIn ? (<Component {...rest} {...props} />) : (<Redirect to="/" />)
+            )} />
+        )
         return (
                 <div className="display-table">
                     <div className="display-table-row">
@@ -42,7 +49,7 @@ class App extends React.Component {
                             <Switch>
                                 <Redirect exact from="/" to="/home" />
                                 <Route exact path="/home" render={() => <Home eventEmitter={this.eventEmitter} {...this.props} />} />
-                                <Route exact path="/about" render={() => <About eventEmitter={this.eventEmitter} {...this.props} />} />
+                                <PrivateRoute exact path="/about" component={About} eventEmitter={this.eventEmitter} {...this.props} />
                             </Switch>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addTweet } from '../redux';
+import { withRouter } from 'react-router-dom';
 
 class Home extends React.Component {
     constructor(props) {
@@ -16,8 +17,12 @@ class Home extends React.Component {
     }
 
     render() {
+        const RouteToAbout = withRouter(({ history }) => (
+            <input type="button" value="about us!" onClick={() => history.push('/about')} />
+        ));
         return (
             <div>
+                <RouteToAbout />
                 <div>
                     {this.props.tweets.map((v, k) => (<h3 key={k}>{v}</h3>))}
                 </div>

@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { login } from '../redux';
 
-export default class About extends React.Component {
+class About extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -10,8 +12,13 @@ export default class About extends React.Component {
     }
 
     render() {
-        return (
-            <h1>About us!</h1>
-        );
+        //const LoginButton = this.props.user.loggedIn ? (<h1>About us!</h1>) : (<input type="button" value="login" onClick={() => this.props.login()} />);
+        //return LoginButton
+        return <h1>About Us!</h1>
     }
 }
+
+export default connect(
+    state => ({ user: state.user }),
+    { login }
+)(About);
