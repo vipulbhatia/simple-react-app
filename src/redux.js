@@ -1,5 +1,8 @@
 import { combineReducers, createStore } from 'redux';
 
+//actions.js
+export const addTweet = (payload) => ({ type: 'ADD_TWEET', payload: payload });
+
 const userReducer = (state={}, action) => {
     switch(action.type) {
         case 'CHANGE_NAME': return {...state, name: action.payload};
@@ -9,10 +12,7 @@ const userReducer = (state={}, action) => {
 
 const tweetsReducer = (state=[], action) => {
     switch(action.type) {
-        case 'ADD_TWEET': {
-            console.log(state, action.payload);
-            return [...state, action.payload];
-        }
+        case 'ADD_TWEET': return [...state, action.payload];
         default: return state;
     }
 }

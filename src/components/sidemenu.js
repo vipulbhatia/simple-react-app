@@ -7,7 +7,7 @@ export default class SideMenu extends React.Component {
         super(props);
     }
 
-    render () {
+    render() {
         return(
             <div id="side-menu">
                 <h1>Side Menu</h1>

@@ -9,6 +9,8 @@ import Home from './components/home';
 import About from './components/about';
 import SideMenu from './components/sidemenu';
 import { EventEmitter } from 'events';
+import { Provider } from 'react-redux';
+import { store } from './redux';
 
 class App extends React.Component {
     constructor(props) {
@@ -51,10 +53,12 @@ class App extends React.Component {
 
 const routerRenderer = () => {
     return (
-        <Router>
-            <Route path="/" component={App}>
-            </Route>
-        </Router>
+        <Provider store={store}>
+            <Router>
+                <Route path="/" component={App}>
+                </Route>
+            </Router>
+        </Provider>
     );
 }
 
