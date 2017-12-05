@@ -24,6 +24,12 @@ export default class SideMenu extends React.Component {
                             <span>About</span>
                         </Link>
                     </li>
+                    <li className={this.props.screenIndex === 3 ? 'active' : ''}>
+                        <Link to="/protected">
+                            <span><Glyphicon glyph={'home'}/></span>
+                            <span>Protected</span>
+                        </Link>
+                    </li>
                 </ul>
             </div>
         );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addTweet } from '../redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Prompt } from 'react-router-dom';
 
 class Home extends React.Component {
     constructor(props) {
@@ -22,6 +22,7 @@ class Home extends React.Component {
         ));
         return (
             <div>
+                <Prompt when={this.state.currentTweet !== ''} message={() => 'Discard changes?'} />
                 <RouteToAbout />
                 <div>
                     {this.props.tweets.map((v, k) => (<h3 key={k}>{v}</h3>))}

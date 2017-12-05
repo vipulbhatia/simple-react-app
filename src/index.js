@@ -7,6 +7,7 @@ import { AppContainer } from 'react-hot-loader';
 import 'bootstrap/dist/css/bootstrap.css';
 import Home from './components/home';
 import About from './components/about';
+import Protected from './components/protected';
 import SideMenu from './components/sidemenu';
 import { EventEmitter } from 'events';
 import { Provider } from 'react-redux';
@@ -16,12 +17,12 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loggedIn: true,
             screenIndex: 1
         }
     }
 
     componentWillMount() {
+        console.log(this.props);
         this.eventEmitter = new EventEmitter();
         this.eventEmitter.addListener('navigateScreen', ({newScreenIndex}) => {
             this.updateScreen({newScreenIndex});
@@ -29,16 +30,10 @@ class App extends React.Component {
     }
 
     updateScreen = ({newScreenIndex}) => {
-        console.log('setting screen index');
         this.setState({screenIndex: newScreenIndex});
     }
 
     render() {
-        const PrivateRoute = ({ component: Component, exact, path, ...rest }) => (
-            <Route exact path={path} render={props => (
-                this.state.loggedIn ? (<Component {...rest} {...props} />) : (<Redirect to="/" />)
-            )} />
-        )
         return (
                 <div className="display-table">
                     <div className="display-table-row">
@@ -49,7 +44,8 @@ class App extends React.Component {
                             <Switch>
                                 <Redirect exact from="/" to="/home" />
                                 <Route exact path="/home" render={() => <Home eventEmitter={this.eventEmitter} {...this.props} />} />
-                                <PrivateRoute exact path="/about" component={About} eventEmitter={this.eventEmitter} {...this.props} />
+                                <Route exact path="/about" render={() => <About eventEmitter={this.eventEmitter} {...this.props} />} />
+                                <PrivateRoute exact path="/protected" component={Protected} loggedIn={store.getState().user.loggedIn} eventEmitter={this.eventEmitter} {...this.props} />
                             </Switch>
                         </div>
                     </div>
@@ -57,6 +53,12 @@ class App extends React.Component {
         );
     }
 }
+
+const PrivateRoute = ({ component: Component, exact, path, loggedIn, ...rest }) => (
+    <Route exact path={path} render={() => (
+        loggedIn ? <Component {...rest} /> : <Redirect to="/" />
+    )} />
+)
 
 const routerRenderer = () => {
     return (
